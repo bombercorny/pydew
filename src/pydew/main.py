@@ -1,15 +1,15 @@
 import pygame, sys
-from settings import *
-from level import Level
+from pydew.settings import Settings
+from pydew.level import Level
 
 
 class Game:
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption("Sprout land")
+        self.settings = Settings()
+        self.screen = pygame.display.set_mode(self.settings.screen.size)
         self.clock = pygame.time.Clock()
-        self.level = Level()
+        self.level = Level(settings=self.settings)
 
     def run(self):
         while True:

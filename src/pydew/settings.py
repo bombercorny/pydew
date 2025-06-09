@@ -10,20 +10,24 @@ class Screen:
     overlay_tool_position: tuple[int, int] = field(init=False)
     overlay_seed_position: tuple[int, int] = field(init=False)
 
+    @property
+    def size(self) -> tuple[int, int]:
+        return (self.width, self.height)
+
     def __post_init__(self):
         self.overlay_tool_position = (40, self.height - 15)
         self.overlay_seed_position = (70, self.height - 5)
 
 
-@dataclass(frozen=True)
+@dataclass
 class PlayerToolOffset:
-    left: Vector2 = Vector2(-50, 40)
-    right: Vector2 = Vector2(50, 40)
-    up: Vector2 = Vector2(0, -10)
-    down: Vector2 = Vector2(0, 50)
+    left: Vector2 = field(default_factory=lambda: Vector2(-50, 40))
+    right: Vector2 = field(default_factory=lambda: Vector2(50, 40))
+    up: Vector2 = field(default_factory=lambda: Vector2(0, -10))
+    down: Vector2 = field(default_factory=lambda: Vector2(0, 50))
 
 
-@dataclass(frozen=True)
+@dataclass
 class Layers:
     water: int = 0
     ground: int = 1
@@ -41,7 +45,7 @@ class Layers:
         return getattr(self, name.replace(" ", "_"))
 
 
-@dataclass(frozen=True)
+@dataclass
 class ApplePositions:
     small: list[tuple[int, int]] = (
         (18, 17),
@@ -64,7 +68,7 @@ class ApplePositions:
         return getattr(self, size.lower())
 
 
-@dataclass(frozen=True)
+@dataclass
 class GrowSpeed:
     corn: float = 1.0
     tomato: float = 0.7
@@ -73,7 +77,7 @@ class GrowSpeed:
         return getattr(self, crop)
 
 
-@dataclass(frozen=True)
+@dataclass
 class SalePrices:
     wood: int = 4
     apple: int = 2
@@ -84,7 +88,7 @@ class SalePrices:
         return getattr(self, item)
 
 
-@dataclass(frozen=True)
+@dataclass
 class PurchasePrices:
     corn: int = 4
     tomato: int = 5
