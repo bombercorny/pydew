@@ -1,40 +1,106 @@
 from pygame.math import Vector2
+from dataclasses import dataclass, field
 
-# screen
-SCREEN_WIDTH = 1280
-SCREEN_HEIGHT = 720
-TILE_SIZE = 64
 
-# overlay positions
-OVERLAY_POSITIONS = {"tool": (40, SCREEN_HEIGHT - 15), "seed": (70, SCREEN_HEIGHT - 5)}
+@dataclass
+class Screen:
+    width: int = 1280
+    height: int = 720
+    tile_size: int = 64
+    overlay_tool_position: tuple[int, int] = field(init=False)
+    overlay_seed_position: tuple[int, int] = field(init=False)
 
-PLAYER_TOOL_OFFSET = {
-    "left": Vector2(-50, 40),
-    "right": Vector2(50, 40),
-    "up": Vector2(0, -10),
-    "down": Vector2(0, 50),
-}
+    def __post_init__(self):
+        self.overlay_tool_position = (40, self.height - 15)
+        self.overlay_seed_position = (70, self.height - 5)
 
-LAYERS = {
-    "water": 0,
-    "ground": 1,
-    "soil": 2,
-    "soil water": 3,
-    "rain floor": 4,
-    "house bottom": 5,
-    "ground plant": 6,
-    "main": 7,
-    "house top": 8,
-    "fruit": 9,
-    "rain drops": 10,
-}
 
-APPLE_POS = {
-    "Small": [(18, 17), (30, 37), (12, 50), (30, 45), (20, 30), (30, 10)],
-    "Large": [(30, 24), (60, 65), (50, 50), (16, 40), (45, 50), (42, 70)],
-}
+@dataclass(frozen=True)
+class PlayerToolOffset:
+    left: Vector2 = Vector2(-50, 40)
+    right: Vector2 = Vector2(50, 40)
+    up: Vector2 = Vector2(0, -10)
+    down: Vector2 = Vector2(0, 50)
 
-GROW_SPEED = {"corn": 1, "tomato": 0.7}
 
-SALE_PRICES = {"wood": 4, "apple": 2, "corn": 10, "tomato": 20}
-PURCHASE_PRICES = {"corn": 4, "tomato": 5}
+@dataclass(frozen=True)
+class Layers:
+    water: int = 0
+    ground: int = 1
+    soil: int = 2
+    soil_water: int = 3
+    rain_floor: int = 4
+    house_bottom: int = 5
+    ground_plant: int = 6
+    main: int = 7
+    house_top: int = 8
+    fruit: int = 9
+    rain_drops: int = 10
+
+    def get(self, name: str) -> int:
+        return getattr(self, name.replace(" ", "_"))
+
+
+@dataclass(frozen=True)
+class ApplePositions:
+    small: list[tuple[int, int]] = (
+        (18, 17),
+        (30, 37),
+        (12, 50),
+        (30, 45),
+        (20, 30),
+        (30, 10),
+    )
+    large: list[tuple[int, int]] = (
+        (30, 24),
+        (60, 65),
+        (50, 50),
+        (16, 40),
+        (45, 50),
+        (42, 70),
+    )
+
+    def get(self, size: str) -> list[tuple[int, int]]:
+        return getattr(self, size.lower())
+
+
+@dataclass(frozen=True)
+class GrowSpeed:
+    corn: float = 1.0
+    tomato: float = 0.7
+
+    def get(self, crop: str) -> float:
+        return getattr(self, crop)
+
+
+@dataclass(frozen=True)
+class SalePrices:
+    wood: int = 4
+    apple: int = 2
+    corn: int = 10
+    tomato: int = 20
+
+    def get(self, item: str) -> int:
+        return getattr(self, item)
+
+
+@dataclass(frozen=True)
+class PurchasePrices:
+    corn: int = 4
+    tomato: int = 5
+
+    def get(self, item: str) -> int:
+        return getattr(self, item)
+
+
+@dataclass
+class Settings:
+    screen: Screen = field(default_factory=lambda: Screen())
+    player_tool_offset: PlayerToolOffset = field(
+        default_factory=lambda: PlayerToolOffset()
+    )
+    layers: Layers = field(default_factory=lambda: Layers())
+    apple_positions: ApplePositions = field(default_factory=lambda: ApplePositions())
+    grow_speed: GrowSpeed = field(default_factory=lambda: GrowSpeed())
+    sales_prices: SalePrices = field(default_factory=lambda: SalePrices())
+    purchase_prices: PurchasePrices = field(default_factory=lambda: PurchasePrices())
