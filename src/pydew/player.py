@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
         self.settings = settings
         self.animations = animations
 
-        self.status = "down_axe"
+        self.status = "down"
         self.frame_index = 0
 
         self.image = self.animations[self.status][self.frame_index]
@@ -24,20 +24,27 @@ class Player(pygame.sprite.Sprite):
         self.speed = 200
         self.animations = animations
 
+    def update_status(self):
+        if self.direction.magnitude() == 0:
+            self.status = f"{self.status.split('_')[0]}_idle"
+
     def input(self):
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_UP]:
             self.direction.y = -1
+            self.status = "up"
         elif keys[pygame.K_DOWN]:
             self.direction.y = 1
+            self.status = "down"
         else:
             self.direction.y = 0
-
         if keys[pygame.K_LEFT]:
             self.direction.x = -1
+            self.status = "left"
         elif keys[pygame.K_RIGHT]:
             self.direction.x = 1
+            self.status = "right"
         else:
             self.direction.x = 0
 
@@ -48,6 +55,15 @@ class Player(pygame.sprite.Sprite):
             # vertical
             self.rect.y += self.direction.y * dt * self.speed
 
+    def animate(self, dt: float):
+        self.frame_index += self.settings.graphics.animation_speed * dt
+        if self.frame_index >= len(self.animations[self.status]):
+            self.frame_index = 0
+
+        self.image = self.animations[self.status][int(self.frame_index)]
+
     def update(self, dt: float):
-        self.move(dt)
         self.input()
+        self.move(dt)
+        self.update_status()
+        self.animate(dt)

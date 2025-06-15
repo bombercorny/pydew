@@ -98,6 +98,11 @@ class PurchasePrices:
 
 
 @dataclass
+class Graphics:
+    animation_speed: int = 4
+
+
+@dataclass
 class Settings:
     screen: Screen = field(default_factory=lambda: Screen())
     player_tool_offset: PlayerToolOffset = field(
@@ -108,3 +113,4 @@ class Settings:
     grow_speed: GrowSpeed = field(default_factory=lambda: GrowSpeed())
     sales_prices: SalePrices = field(default_factory=lambda: SalePrices())
     purchase_prices: PurchasePrices = field(default_factory=lambda: PurchasePrices())
+    graphics: Graphics = field(default_factory=lambda: Graphics())

@@ -43,8 +43,6 @@ class Game:
                 "src", "pydew", "graphics", "character", animation
             )
 
-        print(self.animations)
-
     def run(self):
         while True:
             for event in pygame.event.get():
