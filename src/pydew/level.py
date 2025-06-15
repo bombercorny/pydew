@@ -4,8 +4,9 @@ from pydew.player import Player
 
 
 class Level:
-    def __init__(self, settings: Settings):
+    def __init__(self, settings: Settings, animations: dict[str, list[pygame.Surface]]):
         self.settings = settings
+        self.animations = animations
 
         # get the display surface
         self.display_surface = pygame.display.get_surface()
@@ -17,7 +18,10 @@ class Level:
 
     def setup(self):
         self.player = Player(
-            group=self.all_sprites, pos=(430, 320), settings=self.settings
+            group=self.all_sprites,
+            pos=(430, 320),
+            settings=self.settings,
+            animations=self.animations,
         )
 
     def run(self, dt: float):

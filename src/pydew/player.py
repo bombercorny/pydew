@@ -4,14 +4,25 @@ from pydew.settings import Settings
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos: tuple[int, int], group, settings: Settings):
+    def __init__(
+        self,
+        pos: tuple[int, int],
+        group,
+        settings: Settings,
+        animations: dict[str, list[pygame.Surface]],
+    ):
         super().__init__(group)
         self.settings = settings
-        self.image = pygame.Surface((32, 64))
-        self.image.fill("red")
+        self.animations = animations
+
+        self.status = "down_axe"
+        self.frame_index = 0
+
+        self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_frect(center=pos)
         self.direction = Vector2()
         self.speed = 200
+        self.animations = animations
 
     def input(self):
         keys = pygame.key.get_pressed()

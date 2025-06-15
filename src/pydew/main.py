@@ -1,6 +1,8 @@
 import pygame, sys
 from pydew.settings import Settings
 from pydew.level import Level
+from pydew.support import import_folder
+from os.path import join
 
 
 class Game:
@@ -8,8 +10,40 @@ class Game:
         pygame.init()
         self.settings = Settings()
         self.screen = pygame.display.set_mode(self.settings.screen.size)
+        self.import_assets()
+
         self.clock = pygame.time.Clock()
-        self.level = Level(settings=self.settings)
+        self.level = Level(settings=self.settings, animations=self.animations)
+
+    def import_assets(self):
+        self.animations: dict[str, list[pygame.Surface]] = {
+            "up": [],
+            "down": [],
+            "left": [],
+            "right": [],
+            "right_idle": [],
+            "left_idle": [],
+            "up_idle": [],
+            "down_idle": [],
+            "right_hoe": [],
+            "left_hoe": [],
+            "up_hoe": [],
+            "down_hoe": [],
+            "right_axe": [],
+            "left_axe": [],
+            "up_axe": [],
+            "down_axe": [],
+            "right_water": [],
+            "left_water": [],
+            "up_water": [],
+            "down_water": [],
+        }
+        for animation in self.animations.keys():
+            self.animations[animation] = import_folder(
+                "src", "pydew", "graphics", "character", animation
+            )
+
+        print(self.animations)
 
     def run(self):
         while True:
