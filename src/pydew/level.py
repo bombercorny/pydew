@@ -2,6 +2,7 @@ import pygame
 from pydew.settings import Settings
 from pydew.player import Player
 from pydew.overlay import Overlay
+from pydew.camera import Camera
 
 
 class Level:
@@ -13,7 +14,7 @@ class Level:
         self.display_surface = pygame.display.get_surface()
 
         # sprite groups
-        self.all_sprites = pygame.sprite.Group()
+        self.all_sprites = Camera(display_surface=self.display_surface)
 
         self.setup()
         self.overlay = Overlay(
@@ -32,6 +33,6 @@ class Level:
 
     def run(self, dt: float):
         self.display_surface.fill("black")
-        self.all_sprites.draw(self.display_surface)
+        self.all_sprites.draw()
         self.all_sprites.update(dt)
         self.overlay.display()
