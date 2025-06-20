@@ -1,6 +1,7 @@
 import pygame
 from pydew.settings import Settings
 from pydew.player import Player
+from pydew.overlay import Overlay
 
 
 class Level:
@@ -15,6 +16,11 @@ class Level:
         self.all_sprites = pygame.sprite.Group()
 
         self.setup()
+        self.overlay = Overlay(
+            player=self.player,
+            display_surface=self.display_surface,
+            settings=self.settings,
+        )
 
     def setup(self):
         self.player = Player(
@@ -28,3 +34,4 @@ class Level:
         self.display_surface.fill("black")
         self.all_sprites.draw(self.display_surface)
         self.all_sprites.update(dt)
+        self.overlay.display()
