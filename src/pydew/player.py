@@ -28,17 +28,30 @@ class Player(pygame.sprite.Sprite):
         self.timers: dict[str, Timer] = {
             "tool_use": Timer(350, self.use_tool),
             "tool_switch": Timer(200),
+            "seed_use": Timer(350, self.use_seed),
+            "seed_switch": Timer(200),
         }
 
         # tools
         self.tools = ["hoe", "axe", "water"]
         self.tool_index = 0
 
+        # seeds
+        self.seeds = ["corn", "tomato"]
+        self.seed_index = 0
+
     @property
     def selected_tool(self) -> str:
         return self.tools[self.tool_index % len(self.tools)]
 
+    @property
+    def selected_seed(self) -> str:
+        return self.seeds[self.seed_index % len(self.seeds)]
+
     def use_tool(self):
+        pass
+
+    def use_seed(self):
         pass
 
     def update_status(self):
@@ -81,6 +94,21 @@ class Player(pygame.sprite.Sprite):
             ):  # prevent multiple switches per frame
                 self.timers["tool_switch"].activate()
                 self.tool_index += 1
+
+            # seed use
+            if keys[pygame.K_LCTRL]:
+                self.timers["seed_use"].activate()
+                self.direction = Vector2()  # stop player movement on seed usage
+                self.frame_index = 0  # reset to get consistent animations
+                print("use seed")
+
+            # switch seed
+            if (
+                keys[pygame.K_e] and not self.timers["seed_switch"].active
+            ):  # prevent multiple switches per frame
+                self.timers["seed_switch"].activate()
+                self.seed_index += 1
+                print(self.selected_seed)
 
     def move(self, dt: float):
         if self.direction.magnitude() > 0:
