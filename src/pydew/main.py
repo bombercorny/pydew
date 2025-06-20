@@ -2,7 +2,6 @@ import pygame, sys
 from pydew.settings import Settings
 from pydew.level import Level
 from pydew.support import import_folder
-from os.path import join
 
 
 class Game:

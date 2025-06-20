@@ -100,7 +100,6 @@ class Player(pygame.sprite.Sprite):
                 self.timers["seed_use"].activate()
                 self.direction = Vector2()  # stop player movement on seed usage
                 self.frame_index = 0  # reset to get consistent animations
-                print("use seed")
 
             # switch seed
             if (
@@ -108,7 +107,6 @@ class Player(pygame.sprite.Sprite):
             ):  # prevent multiple switches per frame
                 self.timers["seed_switch"].activate()
                 self.seed_index += 1
-                print(self.selected_seed)
 
     def move(self, dt: float):
         if self.direction.magnitude() > 0:
