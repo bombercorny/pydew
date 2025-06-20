@@ -25,13 +25,21 @@ class Player(pygame.sprite.Sprite):
         self.speed = 200
         self.animations = animations
 
-        self.timers: dict[str, Timer] = {"tool_use": Timer(350, self.use_tool)}
+        self.timers: dict[str, Timer] = {
+            "tool_use": Timer(350, self.use_tool),
+            "tool_switch": Timer(200),
+        }
 
         # tools
-        self.selected_tool = "axe"
+        self.tools = ["hoe", "axe", "water"]
+        self.tool_index = 0
+
+    @property
+    def selected_tool(self) -> str:
+        return self.tools[self.tool_index % len(self.tools)]
 
     def use_tool(self):
-        print("use tool")
+        pass
 
     def update_status(self):
         if self.direction.magnitude() == 0:
@@ -66,6 +74,13 @@ class Player(pygame.sprite.Sprite):
                 self.timers["tool_use"].activate()
                 self.direction = Vector2()  # stop player movement on tool usage
                 self.frame_index = 0  # reset to get consistent animations
+
+            # switch tool
+            if (
+                keys[pygame.K_q] and not self.timers["tool_switch"].active
+            ):  # prevent multiple switches per frame
+                self.timers["tool_switch"].activate()
+                self.tool_index += 1
 
     def move(self, dt: float):
         if self.direction.magnitude() > 0:
