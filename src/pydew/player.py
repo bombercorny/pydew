@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
 
         self.status = "down"
         self.frame_index = 0
+        self.layer_index = self.settings.layers.get("main")
 
         self.image = self.animations[self.status][self.frame_index]
         self.rect = self.image.get_frect(center=pos)
