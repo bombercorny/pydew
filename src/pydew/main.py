@@ -15,7 +15,10 @@ class Game:
         self.level = Level(settings=self.settings, animations=self.animations)
 
     def import_assets(self):
-        self.animations: dict[str, list[pygame.Surface]] = {
+        self.animations: dict[
+            str, list[pygame.Surface] | dict[str, list[pygame.Surface]]
+        ] = {}
+        self.animations["player"] = {
             "up": [],
             "down": [],
             "left": [],
@@ -37,10 +40,12 @@ class Game:
             "up_water": [],
             "down_water": [],
         }
-        for animation in self.animations.keys():
-            self.animations[animation] = import_folder(
+        for animation in self.animations["player"].keys():
+            self.animations["player"][animation] = import_folder(
                 "src", "pydew", "graphics", "character", animation
             )
+
+        self.animations["water"] = import_folder("src", "pydew", "graphics", "water")
 
     def run(self):
         while True:
