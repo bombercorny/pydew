@@ -4,9 +4,9 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [
-    { name = "bombercorny", email = "66563294+bombercorny@users.noreply.github.com" }
+    { name = "bombercorny", email = "claudius.hini@hotmail.de" }
 ]
-requires-python = ">=3.11.0"
+requires-python = ">=3.11"
 dependencies = [
     "pygame-ce>=2.5.5",
 ]
